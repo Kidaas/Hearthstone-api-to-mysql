@@ -1,0 +1,22 @@
+{
+  "name": "hearthstone_api_to_db",
+  "version": "1.0.0",
+  "description": "Insert Hearthstone api data to a sql database",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "Hearthsone"
+  ],
+  "author": "sarrazin.kevin@live.fr",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mysql2": "^1.7.0",
+    "passport": "^0.4.0",
+    "passport-bnet": "^2.0.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  }
+}

@@ -1,0 +1,93 @@
+CREATE DATABASE hearthstone_stat DEFAULT CHAR SET 'utf8';
+
+use hearthstone_stat;
+
+CREATE TABLE IF NOT EXISTS Card_set (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    release_date DATETIME DEFAULT NULL,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Group` (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    year INT DEFAULT NULL,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Group_card_set (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    group_id INT NOT NULL,
+    card_set_id INT NOT NULL,
+    CONSTRAINT fk_group_card_set__group FOREIGN KEY (group_id) REFERENCES `Group` (id),
+    CONSTRAINT fk_group_card_set__card_set FOREIGN KEY (card_set_id) REFERENCES Card_set (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Card_type (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Rarity (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Attention a l'id * ?
+CREATE TABLE IF NOT EXISTS Class (
+    id INT(10) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    card_id INT DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Minion_type (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Keyword (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    ref_text VARCHAR(255) DEFAULT NULL,
+    `text` VARCHAR(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Card (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    class_id INT DEFAULT NULL,
+    card_type_id INT DEFAULT NULL,
+    card_set_id INT DEFAULT NULL,
+    rarity_id INT DEFAULT NULL,
+    minion_type_id INT DEFAULT NULL,
+    collectible TINYINT NOT NULL DEFAULT 0,
+    slug VARCHAR(255) NOT NULL,
+    `text` VARCHAR(255) DEFAULT NULL,
+    flavor_text VARCHAR(255) DEFAULT NULL,
+    artist_name VARCHAR(255) DEFAULT NULL,
+    name VARCHAR(255) NOT NULL,
+    image_path VARCHAR(255) DEFAULT NULL,
+    crop_image_path VARCHAR(255) DEFAULT NULL,
+    health INT DEFAULT NULL,
+    attack INT DEFAULT NULL,
+    durability INT DEFAULT NULL,
+    mana_cost INT DEFAULT NULL,
+    CONSTRAINT fk_card__class FOREIGN KEY (class_id) REFERENCES Class (id),
+    CONSTRAINT fk_card__card_set FOREIGN KEY (card_set_id) REFERENCES Card_set (id),
+    CONSTRAINT fk_card__rarity FOREIGN KEY (rarity_id) REFERENCES Rarity (id),
+    CONSTRAINT fk_card__card_type FOREIGN KEY (card_type_id) REFERENCES Card_type (id),
+    CONSTRAINT fk_card__minion_type FOREIGN KEY (minion_type_id) REFERENCES Minion_type (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS Card_keyword (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    card_id INT NOT NULL,
+    keyword_id INT NOT NULL,
+    CONSTRAINT fk_card_keywork__card FOREIGN KEY (card_id) REFERENCES Card (id),
+    CONSTRAINT fk_card_keywork__keywork FOREIGN KEY (keyword_id) REFERENCES Keyword (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
