@@ -112,10 +112,13 @@ class Process {
     this.connection.end();
   }
 
+  /**
+   * Add various metadata missing in Hearthstone API
+   */
   fixMetadata (metadata) {
     // fix wild-event doesn't in metadata..
     metadata.sets.push({
-      id: 1439, // pas sur de l'id
+      id: 1439,
       slug: 'wild-event',
       releaseDate: '2019-10-08T00:00:00',
       name: 'Wild event'

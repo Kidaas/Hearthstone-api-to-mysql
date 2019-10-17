@@ -20,7 +20,7 @@ class ApiService {
         pass: this.BNET_SECRET
       },
       form: {
-        'grant_type': 'client_credentials'
+        grant_type: 'client_credentials'
       }
     });
 
@@ -43,7 +43,6 @@ class ApiService {
   }
 
   async getCardBySet (setSlug) {
-    console.log('Set : ', setSlug);
     try {
       var response = await request({
         url: 'https://us.api.blizzard.com/hearthstone/cards?pageSize=1000&locale=en_US&set=' + setSlug,
